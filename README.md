@@ -378,3 +378,48 @@ Andrei Nacaya
 ## Project
 
 Build Your Own API Server Challenge
+---
+
+## API Testing Screenshots
+
+The following screenshots demonstrate successful testing of the REST API endpoints using Postman.
+
+### GET - Retrieve All Pokemon
+
+**Endpoint:** GET /pokemon  
+**Expected Status:** 200 OK
+
+![GET Pokemon](screenshots/GET.png)
+
+### POST - Create a Pokemon
+
+**Endpoint:** POST /pokemon  
+**Expected Status:** 201 CREATED
+
+![POST Pokemon](screenshots/POST.png)
+
+### PUT - Update a Pokemon
+
+**Endpoint:** PUT /pokemon/16  
+**Expected Status:** 200 OK
+
+![PUT Pokemon](screenshots/PUT.png)
+
+### DELETE - Delete a Pokemon
+
+**Endpoint:** DELETE /pokemon/16  
+**Expected Status:** 200 OK
+
+![DELETE Pokemon](screenshots/DELETE.png)
+
+---
+
+## Postman Testing Summary
+
+| Method | Endpoint | Purpose | Status |
+|---|---|---|---|
+| GET | /pokemon | Retrieve all Pokemon | 200 OK |
+| POST | /pokemon | Create a new Pokemon | 201 CREATED |
+| PUT | /pokemon/16 | Update an existing Pokemon | 200 OK |
+| DELETE | /pokemon/16 | Delete an existing Pokemon | 200 OK |
+
