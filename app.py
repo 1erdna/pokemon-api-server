@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 import sqlite3
 
 app = Flask(__name__)
 
 DATABASE = "pokemon.db"
+FRONTEND_FOLDER = "frontend"
 
 
 def get_db_connection():
@@ -56,12 +57,15 @@ def create_database():
     conn.close()
 
 
-# HOME
+# FRONTEND
 @app.route("/")
 def home():
-    return jsonify({
-        "message": "Welcome to my Pokemon API!"
-    })
+    return send_from_directory(FRONTEND_FOLDER, "index.html")
+
+
+@app.route("/frontend/<path:filename>")
+def frontend_files(filename):
+    return send_from_directory(FRONTEND_FOLDER, filename)
 
 
 # GET ALL POKEMON
