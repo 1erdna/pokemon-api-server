@@ -1,33 +1,57 @@
 # Pokemon Full Stack CRUD App
 
-A simple full stack Pokemon manager built with **Python, Flask, SQLite, HTML, CSS, and JavaScript Fetch API**.
+A full stack Pokemon manager built with **Python, Flask, SQLite, HTML5, CSS3, and JavaScript Fetch API**.
 
-The project now includes the original REST API backend plus a browser frontend that can list, view, add, edit, and delete Pokemon.
+This repository contains the original REST API backend plus a browser frontend that can **list, view, add, edit, and delete Pokemon** through a real user interface.
+
+## Frontend for Your API Server Lab
+
+This project fulfills the lab requirement to build a frontend that consumes the API server from the previous activity. The frontend is inside the existing repository under the `frontend/` folder.
+
+### Assignment Requirement Checklist
+
+- [x] Frontend folder inside the existing API repository
+- [x] List view using `GET /pokemon`
+- [x] Detail view using `GET /pokemon/:id`
+- [x] Add form using `POST /pokemon`
+- [x] Edit form using `PUT /pokemon/:id`
+- [x] Delete button using `DELETE /pokemon/:id`
+- [x] Displays API validation messages for HTTP `400`
+- [x] Handles HTTP `404` gracefully
+- [x] Shows a loading state while fetching data
+- [x] Styled responsive user interface
+- [x] README includes steps to run both backend and frontend
+- [ ] Walkthrough video — recorded and submitted separately by the student
 
 ## Features
 
 ### Backend API
-- GET all Pokemon
-- GET one Pokemon by ID
-- POST a new Pokemon
-- PUT updates to an existing Pokemon
-- DELETE a Pokemon
-- Validation with HTTP 400 responses
-- Graceful HTTP 404 responses
-- SQLite database with starter Pokemon data
+
+- Retrieve all Pokemon
+- Retrieve a single Pokemon by ID
+- Create new Pokemon
+- Update existing Pokemon
+- Delete Pokemon
+- Validate required fields
+- Return appropriate HTTP status codes
+- Store data in SQLite
+- Seed the database with starter Pokemon
 
 ### Frontend
-- List view showing all Pokemon
-- Detail view using GET by ID
-- Add form using POST
-- Edit form using PUT
-- Delete button using DELETE
-- API validation messages shown in the interface
-- Graceful 404 display
-- Loading state while fetching data
-- Responsive app styling
 
-The frontend is served by the same Flask application as the API, so both use the same origin and do not need a separate CORS package.
+- Pokemon collection/list view
+- Pokemon detail view
+- Add Pokemon form
+- Edit Pokemon form
+- Delete confirmation
+- Success and error messages
+- API validation error display
+- Friendly 404 handling
+- Loading indicator
+- Responsive layout for desktop and mobile
+- Pokemon artwork in the detail view using **PokeAPI** when internet access is available
+
+The artwork feature is an extra visual enhancement. The CRUD application still works if PokeAPI is unavailable; in that case the detail view shows an artwork placeholder.
 
 ## Project Structure
 
@@ -48,44 +72,85 @@ pokemon-api-server/
     └── DELETE.png
 ```
 
-## How to Run the Backend and Frontend
+## How the Frontend Connects to the Backend
+
+Flask serves both the API and the frontend files from the same application and same origin.
+
+The main application runs at:
+
+```text
+http://127.0.0.1:5000
+```
+
+The frontend calls API routes such as:
+
+```text
+/pokemon
+/pokemon/1
+```
+
+Because the frontend and API share the same origin, a separate CORS package is not required for this version of the project.
+
+## How to Run the Project
 
 ### 1. Clone the repository
 
+Final repository:
+
 ```bash
-git clone https://github.com/1erdna/pokemon-api-server.git
+git clone https://github.com/AndreiJullian/pokemon-api-server.git
 cd pokemon-api-server
 ```
 
-### 2. Install the dependency
+### 2. Install the Python dependency
+
+On Windows, if the `py` command is available:
+
+```powershell
+py -m pip install -r requirements.txt
+```
+
+Or, on systems where `python` is the command:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ### 3. Start the Flask backend
+
+Windows:
+
+```powershell
+py app.py
+```
+
+Alternative:
 
 ```bash
 python app.py
 ```
 
-You should see Flask running locally, normally at:
+The terminal should show something similar to:
 
 ```text
-http://127.0.0.1:5000
+Running on http://127.0.0.1:5000
 ```
+
+Keep that terminal open while using the application.
 
 ### 4. Open the frontend
 
-Open this URL in your browser:
+Open a browser and visit:
 
 ```text
 http://127.0.0.1:5000
 ```
 
-The frontend is served by Flask automatically. You do **not** need to start a second frontend server.
+The frontend is served automatically by Flask. **No second frontend server is required.**
 
 ## Pokemon Data Structure
+
+Each local Pokemon record contains:
 
 ```json
 {
@@ -96,25 +161,101 @@ The frontend is served by Flask automatically. You do **not** need to start a se
 }
 ```
 
-## API Endpoints
+## REST API Endpoints
 
 | Method | Endpoint | Purpose | Success Status |
 |---|---|---|---|
-| GET | `/pokemon` | Retrieve all Pokemon | 200 |
-| GET | `/pokemon/:id` | Retrieve one Pokemon | 200 |
-| POST | `/pokemon` | Create a Pokemon | 201 |
-| PUT | `/pokemon/:id` | Update a Pokemon | 200 |
-| DELETE | `/pokemon/:id` | Delete a Pokemon | 200 |
+| GET | `/pokemon` | Retrieve all Pokemon | `200 OK` |
+| GET | `/pokemon/:id` | Retrieve one Pokemon | `200 OK` |
+| POST | `/pokemon` | Create a Pokemon | `201 CREATED` |
+| PUT | `/pokemon/:id` | Update a Pokemon | `200 OK` |
+| DELETE | `/pokemon/:id` | Delete a Pokemon | `200 OK` |
 
-## Validation
+## GET All Pokemon
 
-POST and PUT use these required fields:
+```text
+GET /pokemon
+```
+
+Example response:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Pikachu",
+    "type": "Electric",
+    "level": 25
+  }
+]
+```
+
+## GET Pokemon by ID
+
+```text
+GET /pokemon/1
+```
+
+Example response:
+
+```json
+{
+  "id": 1,
+  "name": "Pikachu",
+  "type": "Electric",
+  "level": 25
+}
+```
+
+## POST Create Pokemon
+
+```text
+POST /pokemon
+```
+
+Example JSON request:
+
+```json
+{
+  "name": "Mewtwo",
+  "type": "Psychic",
+  "level": 70
+}
+```
+
+## PUT Update Pokemon
+
+```text
+PUT /pokemon/16
+```
+
+Example JSON request:
+
+```json
+{
+  "name": "Mewtwo",
+  "type": "Psychic",
+  "level": 75
+}
+```
+
+## DELETE Pokemon
+
+```text
+DELETE /pokemon/16
+```
+
+A successful delete returns a confirmation message and the deleted Pokemon data.
+
+## Validation and Error Handling
+
+POST and PUT require all of the following fields:
 
 - `name`
 - `type`
 - `level`
 
-Example validation response:
+If a required field is missing, the backend returns HTTP `400` with a message such as:
 
 ```json
 {
@@ -122,13 +263,9 @@ Example validation response:
 }
 ```
 
-Status:
+The frontend displays that API message instead of failing silently.
 
-```text
-400 BAD REQUEST
-```
-
-If a Pokemon ID does not exist:
+If a Pokemon ID does not exist, the backend returns HTTP `404`:
 
 ```json
 {
@@ -136,37 +273,80 @@ If a Pokemon ID does not exist:
 }
 ```
 
-Status:
+The frontend shows a friendly 404 state instead of a blank screen.
+
+## Loading State
+
+While the frontend is waiting for `GET /pokemon`, it displays a loading spinner and the text:
 
 ```text
-404 NOT FOUND
+Loading Pokemon...
 ```
 
-## Frontend Fetch Example
+## Fetch API Example
 
-The frontend calls the API with JavaScript Fetch API. For example, loading the list uses:
+The frontend uses a reusable helper in `frontend/app.js`:
+
+```javascript
+async function apiRequest(url, options = {}) {
+  const response = await fetch(url, options);
+  // response handling follows here
+}
+```
+
+For example, the list view uses:
 
 ```javascript
 const items = await apiRequest('/pokemon');
 ```
 
-The shared `apiRequest()` helper uses `fetch()` and displays error messages returned by the backend.
+This sends a GET request from the browser frontend to the Flask API and then renders the returned JSON data.
 
-## Suggested Walkthrough Order
+## Pokemon Artwork
 
-For the required recording, show these in order:
+When **View** is clicked, the app first loads the selected record from the local Flask API with `GET /pokemon/:id`. It then uses the Pokemon name to request artwork from:
 
-1. Flask backend running in the terminal
-2. Pokemon list loading in the browser
-3. Adding a Pokemon through the form
+```text
+https://pokeapi.co/api/v2/pokemon/{pokemon-name}
+```
+
+No PokeAPI key is required. Internet access is required only for this artwork lookup. If the lookup fails or the entered name is not a recognized Pokemon, the normal local details still display with a placeholder image area.
+
+## Walkthrough Video Checklist
+
+The walkthrough should be **no more than 5 minutes** and should show the following in order:
+
+1. The Flask backend running in the terminal
+2. The list view loading Pokemon data
+3. Adding a new Pokemon through the frontend form
 4. Editing a Pokemon
 5. Deleting a Pokemon
-6. Triggering a validation error by leaving a required field empty
-7. Opening `frontend/app.js` and briefly showing a Fetch API call
+6. Deliberately triggering a validation error by leaving a required field empty and showing the API error in the UI
+7. A quick look at one `fetch()` call in `frontend/app.js` with a short explanation of what it does
 
-Do not show secrets, API keys, `.env` files, or database connection strings while recording.
+### Recording Safety
+
+Do not show:
+
+- API keys
+- passwords or tokens
+- an open `.env` file
+- database connection strings containing secrets
+
+Set the final video sharing permission so the instructor can open it with the submitted link.
+
+## What to Submit
+
+Submit these two links as a single text entry in Canvas:
+
+1. The **public GitHub repository link** containing the frontend folder and updated README
+2. The **walkthrough video link**
+
+A hosted/deployed website link is **not required** for this lab. The application can run locally.
 
 ## API Testing Screenshots
+
+The original backend activity screenshots remain in the repository.
 
 ### GET - Retrieve All Pokemon
 
@@ -186,19 +366,20 @@ Do not show secrets, API keys, `.env` files, or database connection strings whil
 
 ## Technologies Used
 
-- Python
+- Python 3
 - Flask
 - SQLite
 - HTML5
 - CSS3
 - JavaScript
 - Fetch API
-- Postman
+- PokeAPI for optional Pokemon artwork
+- Postman for backend API testing
 
 ## Author
 
-Andrei Nacaya
+**Andrei Nacaya**
 
 ## Project
 
-Build Your Own API Server Challenge + Frontend for Your API Server Lab
+**Build Your Own API Server Challenge + Frontend for Your API Server Lab**
