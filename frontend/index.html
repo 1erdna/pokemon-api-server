@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokemon Manager</title>
+  <link rel="stylesheet" href="/frontend/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">FULL STACK CRUD APP</p>
+      <h1>Pokemon Manager</h1>
+      <p class="subtitle">Manage Pokemon through the Flask REST API using a real browser interface.</p>
+      <div class="api-status"><span class="status-dot"></span> API endpoint: <code>/pokemon</code></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="message" class="message hidden" role="alert"></div>
+
+    <section class="toolbar card">
+      <div>
+        <h2>Find a Pokemon</h2>
+        <p>Enter an ID to test the GET-by-ID endpoint.</p>
+      </div>
+      <form id="find-form" class="find-form" novalidate>
+        <input id="find-id" type="number" min="1" placeholder="Pokemon ID">
+        <button type="submit" class="btn btn-secondary">View by ID</button>
+      </form>
+    </section>
+
+    <section class="layout">
+      <section class="card form-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">POST</p>
+            <h2>Add Pokemon</h2>
+          </div>
+        </div>
+        <form id="add-form" class="pokemon-form" novalidate>
+          <label>Name
+            <input id="add-name" type="text" placeholder="e.g. Mewtwo">
+          </label>
+          <label>Type
+            <input id="add-type" type="text" placeholder="e.g. Psychic">
+          </label>
+          <label>Level
+            <input id="add-level" type="number" min="1" placeholder="e.g. 70">
+          </label>
+          <button type="submit" class="btn btn-primary">Add Pokemon</button>
+          <p class="form-note">Tip: leave a field empty to demonstrate the API's 400 validation message.</p>
+        </form>
+      </section>
+
+      <section id="detail-card" class="card detail-card hidden" aria-live="polite">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">GET BY ID</p>
+            <h2>Pokemon Details</h2>
+          </div>
+          <button id="close-detail" type="button" class="icon-btn" aria-label="Close details">×</button>
+        </div>
+        <div id="detail-content"></div>
+      </section>
+
+      <section id="edit-card" class="card form-card hidden">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PUT</p>
+            <h2>Edit Pokemon</h2>
+          </div>
+          <button id="cancel-edit" type="button" class="icon-btn" aria-label="Cancel edit">×</button>
+        </div>
+        <form id="edit-form" class="pokemon-form" novalidate>
+          <input id="edit-id" type="hidden">
+          <label>Name
+            <input id="edit-name" type="text">
+          </label>
+          <label>Type
+            <input id="edit-type" type="text">
+          </label>
+          <label>Level
+            <input id="edit-level" type="number" min="1">
+          </label>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+      </section>
+    </section>
+
+    <section class="list-section">
+      <div class="list-header">
+        <div>
+          <p class="eyebrow">GET ALL</p>
+          <h2>Pokemon Collection</h2>
+          <p id="count-text" class="muted">Loading...</p>
+        </div>
+        <button id="refresh-btn" type="button" class="btn btn-secondary">Refresh</button>
+      </div>
+
+      <div id="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading Pokemon...</p>
+      </div>
+      <div id="pokemon-grid" class="pokemon-grid hidden"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Pokemon API Server Lab • Flask + SQLite + HTML/CSS/JavaScript Fetch API</p>
+  </footer>
+
+  <script src="/frontend/app.js"></script>
+</body>
+</html>
