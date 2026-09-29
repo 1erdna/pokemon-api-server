@@ -37,6 +37,27 @@ async function apiRequest(url, options = {}) {
   return data;
 }
 
+async function getPokemonArtwork(name) {
+  try {
+    const lookupName = name.trim().toLowerCase();
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(lookupName)}`);
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json();
+    return (
+      data?.sprites?.other?.['official-artwork']?.front_default ||
+      data?.sprites?.other?.home?.front_default ||
+      data?.sprites?.front_default ||
+      null
+    );
+  } catch (error) {
+    return null;
+  }
+}
+
 function renderPokemon(items) {
   grid.innerHTML = '';
   countText.textContent = `${items.length} Pokemon loaded`;
@@ -96,27 +117,49 @@ async function loadPokemon() {
 async function showPokemonDetails(id) {
   clearMessage();
   detailCard.classList.remove('hidden');
-  detailContent.innerHTML = '<p class="muted">Loading details...</p>';
+  detailContent.innerHTML = '<p class="muted">Loading details and artwork...</p>';
 
   try {
     const pokemon = await apiRequest(`/pokemon/${id}`);
+    const artworkUrl = await getPokemonArtwork(pokemon.name);
+
+    const artworkMarkup = artworkUrl
+      ? `
+        <div class="artwork-shell">
+          <img class="pokemon-art" src="${artworkUrl}" alt="${escapeHtml(pokemon.name)} artwork">
+        </div>
+      `
+      : `
+        <div class="artwork-shell artwork-unavailable">
+          <div class="artwork-placeholder">?</div>
+          <p>No PokeAPI artwork found for this name.</p>
+        </div>
+      `;
+
     detailContent.innerHTML = `
-      <h3 class="detail-name">${escapeHtml(pokemon.name)}</h3>
-      <div class="detail-meta">
-        <div class="meta-box">
-          <span class="meta-label">ID</span>
-          <strong>${pokemon.id}</strong>
-        </div>
-        <div class="meta-box">
-          <span class="meta-label">Type</span>
-          <strong>${escapeHtml(pokemon.type)}</strong>
-        </div>
-        <div class="meta-box">
-          <span class="meta-label">Level</span>
-          <strong>${pokemon.level}</strong>
+      <div class="detail-layout">
+        ${artworkMarkup}
+        <div class="detail-info">
+          <h3 class="detail-name">${escapeHtml(pokemon.name)}</h3>
+          <div class="detail-meta">
+            <div class="meta-box">
+              <span class="meta-label">ID</span>
+              <strong>${pokemon.id}</strong>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">Type</span>
+              <strong>${escapeHtml(pokemon.type)}</strong>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">Level</span>
+              <strong>${pokemon.level}</strong>
+            </div>
+          </div>
+          <p class="artwork-note">Artwork is loaded from PokeAPI when an internet connection is available.</p>
         </div>
       </div>
     `;
+
     detailCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
   } catch (error) {
     detailContent.innerHTML = `
@@ -153,7 +196,6 @@ async function deletePokemon(id) {
 
   try {
     const result = await apiRequest(`/pokemon/${id}`, { method: 'DELETE' });
-    showMessage(result.message || 'Pokemon deleted successfully.');
     detailCard.classList.add('hidden');
     editCard.classList.add('hidden');
     await loadPokemon();
