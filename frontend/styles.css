@@ -271,13 +271,63 @@ input:focus {
   display: none !important;
 }
 
-.detail-content {
+.detail-layout {
   display: grid;
-  gap: 12px;
+  grid-template-columns: minmax(170px, 220px) 1fr;
+  gap: 22px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.artwork-shell {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 35%, #ffffff 0%, #f7f9fc 55%, #eef2f7 100%);
+  text-align: center;
+}
+
+.pokemon-art {
+  display: block;
+  width: 100%;
+  max-width: 205px;
+  height: 205px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(23, 32, 51, 0.15));
+}
+
+.artwork-unavailable {
+  color: var(--muted);
+}
+
+.artwork-unavailable p {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.artwork-placeholder {
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9edf4;
+  color: #98a2b3;
+  font-size: 2.6rem;
+  font-weight: 900;
+}
+
+.detail-info {
+  min-width: 0;
 }
 
 .detail-name {
-  margin: 10px 0 0;
+  margin: 0;
   font-size: 2rem;
 }
 
@@ -302,6 +352,13 @@ input:focus {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 5px;
+}
+
+.artwork-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 .list-section {
@@ -417,6 +474,20 @@ footer {
 
 code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+@media (max-width: 900px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .artwork-shell {
+    min-height: 190px;
+  }
+
+  .pokemon-art {
+    height: 180px;
+  }
 }
 
 @media (max-width: 760px) {
